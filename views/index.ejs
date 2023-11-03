@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
+    <title>BooksLooks</title>
     <link href="/main.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Hello</h1>
+
+    <div class="box" id="heading">
+        <h1>
+          <%# listTitle %> Hello
+        </h1>
+        <p>This is my little library of read books with notes. Browse and enjoy!</p>
+      </div>
+      <div class="box">
+        <%  for(let item of list){%>
+          <div class="item">
+            <ul>
+                <li id="title<%=item.id%>"><%=item.book_title%></li>
+                <li><%= item.author%></li>
+                <li><%= item.rating%></li>
+                <li><%= item.date_completed%></li>
+            </ul>
+    
+          </div>
+          <% } %>
+    
+        
+      </div>
+
 </body>
 </html>
