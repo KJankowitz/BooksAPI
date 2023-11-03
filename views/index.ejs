@@ -14,21 +14,34 @@
         </h1>
         <p>This is my little library of read books with notes. Browse and enjoy!</p>
       </div>
-      <div class="box">
-        <%  for(let item of list){%>
-          <div class="item">
-            <ul>
-                <li id="title<%=item.id%>"><%=item.book_title%></li>
-                <li><%= item.author%></li>
-                <li><%= item.rating%></li>
-                <li><%= item.date_completed%></li>
-            </ul>
-    
-          </div>
-          <% } %>
-    
         
       </div>
-
+      <div class="response-area">
+        <section id="cards" class="cards">
+            <%  for(let item of list){%>
+            <div>
+                <!-- <img src=<%# content.image %> height="200"> -->
+            </div>
+            <article class="card-item">
+            <h2 class="card-name">
+                <%=item.book_title%>
+            </h2>
+            <div class="card-info">
+              <span class="card-id">
+                <%= item.author%>
+              </span>
+              <span class="card-status">
+                <%= item.rating%>
+              </span>
+              <span class="card-location">
+                <%= item.date_completed%>
+              </span>
+            </div>
+            
+  
+          </article>
+          <% } %>
+        </section>
+      </div>
 </body>
 </html>

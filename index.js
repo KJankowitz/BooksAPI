@@ -5,6 +5,7 @@ import pg from "pg";
 
 const app = express();
 const port = 3000;
+//const API_URL = 
 
 const db = new pg.Client({
     user: "postgres",
