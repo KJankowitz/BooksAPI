@@ -5,7 +5,7 @@ import pg from "pg";
 
 const app = express();
 const port = 3000;
-//const API_URL = 
+const API_URL = "https://covers.openlibrary.org/b/isbn/1591847818-S.jpg"
 
 const db = new pg.Client({
     user: "postgres",
@@ -22,13 +22,19 @@ app.use(express.static("public"));
 let book_list = [];
 
 app.get("/", async(req,res) => {
+   try {
     const result = await db.query( 
         "SELECT * FROM books ORDER BY TO_CHAR(date_completed :: DATE, 'dd/mm/yyyy') DESC"
     );
+    const book_img = await axios.get("https://covers.openlibrary.org/b/isbn/1591847818-S.jpg");
     book_list = result.rows;
     res.render("index.ejs", {
-        list: book_list
+        list: book_list,
+        cover: book_img
     });
+   } catch (error) {
+    console.log(err);
+   } 
 })
 
 app.listen(port, () => {

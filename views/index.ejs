@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>BooksLooks</title>
-    <link href="/main.css" rel="stylesheet">
-</head>
-<body>
+<%- include('partials/header.ejs'); -%>
 
     <div class="box" id="heading">
         <h1>
@@ -19,10 +11,10 @@
       <div class="response-area">
         <section id="cards" class="cards">
             <%  for(let item of list){%>
-            <div>
-                <!-- <img src=<%# content.image %> height="200"> -->
-            </div>
             <article class="card-item">
+                <div>
+                    <img src=<%= cover %>>
+               </div>
             <h2 class="card-name">
                 <%=item.book_title%>
             </h2>
@@ -43,5 +35,4 @@
           <% } %>
         </section>
       </div>
-</body>
-</html>
+      <%- include('partials/footer.ejs'); -%>
