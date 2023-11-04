@@ -5,7 +5,7 @@ import pg from "pg";
 
 const app = express();
 const port = 3000;
-const API_URL = "https://covers.openlibrary.org/b/isbn/1591847818-S.jpg"
+//const API_URL = "https://covers.openlibrary.org/b/isbn/" + $value-$size +".jpg"
 
 const db = new pg.Client({
     user: "postgres",
@@ -21,6 +21,7 @@ app.use(express.static("public"));
 
 let book_list = [];
 
+//Display home page with all books
 app.get("/", async(req,res) => {
    try {
     const result = await db.query( 
@@ -30,11 +31,17 @@ app.get("/", async(req,res) => {
     book_list = result.rows;
     res.render("index.ejs", {
         list: book_list,
-        cover: book_img
+        cover: 'https://covers.openlibrary.org/b/isbn/1591847818-M.jpg'
     });
    } catch (error) {
-    console.log(err);
+    console.log(error.message);
    } 
+})
+
+
+//Create new entry
+app.get("/new", async (req, res) => {
+    res.render("new.ejs");
 })
 
 app.listen(port, () => {

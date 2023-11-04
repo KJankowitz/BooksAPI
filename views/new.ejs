@@ -1,3 +1,27 @@
 <%- include('partials/header.ejs'); -%>
 
+<h1>Add a new book</h1>
+<form action="/new" method="post">
+  <p>Book title:</p>
+  <input type="text" name="book_title" autocomplete="off">
+
+  <p>Book author:</p>
+  <input type="text" name="author" autocomplete="off">
+
+  <p>Book ISBN number:</p>
+  <input type="number" name="isbn" autocomplete="off">
+
+  <p>Book rating:</p>
+  <input type="number" name="rating" min="0" max="10" placeholder="rating/10" autocomplete="off">
+
+  <p>Date completed:</p>
+  <input type="date" name="date_completed" placeholder="yyyy-mm-dd" autocomplete="off">
+
+  <p>Notes:</p>
+  <textarea name="note" autocomplete="off"></textarea>
+
+  <div class="spacer"></div>
+  <button type="submit">Add</button>
+</form>
+
 <%- include('partials/footer.ejs'); -%>

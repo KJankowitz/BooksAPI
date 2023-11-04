@@ -13,7 +13,7 @@
             <%  for(let item of list){%>
             <article class="card-item">
                 <div>
-                    <img src=<%= cover %>>
+                    <img src="<%= cover %>">
                </div>
             <h2 class="card-name">
                 <%=item.book_title%>
@@ -34,5 +34,10 @@
           </article>
           <% } %>
         </section>
+        <div class="box">
+          <h3>Add new book</h3>
+          <a href="/new"><button name="add" value="new">Add</button></a>
+        </div>
+
       </div>
       <%- include('partials/footer.ejs'); -%>
