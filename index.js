@@ -31,7 +31,7 @@ app.get("/", async(req,res) => {
     book_list = result.rows;
     res.render("index.ejs", {
         list: book_list,
-        cover: 'https://covers.openlibrary.org/b/isbn/1591847818-M.jpg'
+        //cover: 'https://covers.openlibrary.org/b/isbn/1591847818-M.jpg'
     });
    } catch (error) {
     console.log(error.message);
@@ -40,8 +40,20 @@ app.get("/", async(req,res) => {
 
 
 //Create new entry
-app.get("/new", async (req, res) => {
+app.get("/new",  (req, res) => {
     res.render("new.ejs");
+})
+app.post("/new", async (req, res) =>{
+    const result = await db.query(
+    "INSERT INTO books (book_title, author, isbn, rating, date_completed) VALUES ($1, $2, $3, $4, $5) RETURNING id", 
+    [req.body.book_title, req.body.author, req.body.isbn, req.body.rating, req.body.date_completed]
+    );
+    const currentBookID = result.rows[0].id;
+    const result_note = await db.query(
+        "INSERT INTO notes (book_id, note) VALUES ($1, $2)",
+        [currentBookID, req.body.note]
+    );
+    res.redirect("/");
 })
 
 app.listen(port, () => {
