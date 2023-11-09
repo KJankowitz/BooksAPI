@@ -6,8 +6,25 @@
  <p><%= book.date_completed %></p>
  <div>
     <% for(let i=0; i<notes.length; i++){%>
-        <p><%= notes[i].note %></p>
-        <% } %>
- </div>
+        <p id="title<%=notes[i].id%>"><%= notes[i].note %></p>
+        
 
+    <form class="edit" action="/edit" method="post">
+        <input type="hidden" name="editNoteId" value="<%= notes[i].id %>">
+        <input id="input<%=notes[i].id%>" type="text" name="updatedNote" value="<%= notes[i].note %>" autocomplete="off"
+            autofocus="true" hidden="true">
+            <button id="done<%=notes[i].id%>" class="edit" type="submit" hidden>Done</button>
+    </form>
+    <button id="edit<%=notes[i].id%>" class="edit" onclick="handler('<%=notes[i].id%>')">Edit Note</button>
+    <% } %>
+ </div>
+ 
+ <script>
+    function handler(id) {
+      document.getElementById("title" + id).setAttribute("hidden", true)
+      document.getElementById("edit" + id).setAttribute("hidden", true)
+      document.getElementById("done" + id).removeAttribute("hidden")
+      document.getElementById("input" + id).removeAttribute("hidden")
+    }
+  </script>
 <%- include('partials/footer.ejs'); -%>

@@ -43,6 +43,9 @@ app.get("/", async(req,res) => {
 app.get("/new",  (req, res) => {
     res.render("new.ejs");
 })
+
+
+
 app.post("/new", async (req, res) =>{
     const result = await db.query(
     "INSERT INTO books (book_title, author, isbn, rating, date_completed) VALUES ($1, $2, $3, $4, $5) RETURNING id", 
@@ -63,14 +66,24 @@ app.post("/book", async (req, res) => {
         [id]
         );
     const all_notes = await db.query(
-        "SELECT note FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
+        "SELECT notes.id, note FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
         [id]
         ); 
     res.render("book.ejs", {
     book : result.rows[0],
     notes : all_notes.rows,
     });
-   
+   console.log(all_notes.rows)
+})
+
+app.post("/edit", async (req, res) => {
+    const updateNote = req.body.updatedNote;
+    const noteId = req.body.editNoteId;
+    const result = await db.query(
+        "UPDATE notes SET note = ($1) WHERE id = ($2)",
+        [updateNote, noteId]
+    );
+    res.redirect("book.ejs");
 })
 
 app.listen(port, () => {

@@ -76,3 +76,14 @@ html {
   .book_notes > label {
     cursor: pointer;
   }
+
+  input[type="text"] {
+    text-align: left;
+    height: 60px;
+    top: 10px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    font-weight: 200;
+    width: 80%;
+  }
