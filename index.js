@@ -56,6 +56,23 @@ app.post("/new", async (req, res) =>{
     res.redirect("/");
 })
 
+app.post("/book", async (req, res) => {
+    const id = req.body.current_id;
+    const result = await db.query(
+        "SELECT * FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
+        [id]
+        );
+    const all_notes = await db.query(
+        "SELECT note FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
+        [id]
+        ); 
+    res.render("book.ejs", {
+    book : result.rows[0],
+    notes : all_notes.rows,
+    });
+   
+})
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

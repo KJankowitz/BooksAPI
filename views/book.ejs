@@ -1,3 +1,13 @@
 <%- include('partials/header.ejs'); -%>
 
+ <h2><%= book.book_title %></h2>
+ <h3><%= book.author %></h3>
+ <p><%= book.rating %></p>
+ <p><%= book.date_completed %></p>
+ <div>
+    <% for(let i=0; i<notes.length; i++){%>
+        <p><%= notes[i].note %></p>
+        <% } %>
+ </div>
+
 <%- include('partials/footer.ejs'); -%>

@@ -68,3 +68,11 @@ html {
     color: white;
     text-align: center;
   }
+
+  .book_notes > input {
+    display: none;
+  }
+
+  .book_notes > label {
+    cursor: pointer;
+  }

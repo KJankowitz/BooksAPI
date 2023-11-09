@@ -28,6 +28,10 @@
               <span class="card-location">
                 <%= item.date_completed%>
               </span>
+              <form class="book_notes" action="/book" method="post">
+                <input type="submit" name="current_id" value="<%=item.id%>" id="<%=item.id%>">
+                <label for="<%=item.id%>">View Notes</label>
+              </form>
             </div>
             
   
