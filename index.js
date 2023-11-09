@@ -19,6 +19,36 @@ const db = new pg.Client({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+//function to get book id to display info
+let currentBookId = 0;
+
+async function getBookId() {
+    const result = await db.query("SELECT id FROM books");
+    let bookIdList = [];
+    bookIdList = result.rows;
+    const id = bookIdList.find((bookId) => bookId.id == currentBookId);
+    return id.id
+}
+
+//function to display info of current book
+async function getBookInfo() {
+    const book = await db.query(
+        "SELECT * FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
+        [currentBookId]
+        );
+    
+    return book;
+}
+
+//function to get all notes of current book
+async function getNotes() {
+    const all_notes = await db.query(
+        "SELECT notes.id, note FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
+        [currentBookId]
+        );
+    return all_notes;
+}
+
 let book_list = [];
 
 //Display home page with all books
@@ -44,46 +74,55 @@ app.get("/new",  (req, res) => {
     res.render("new.ejs");
 })
 
+app.get("/book", async (req, res) => {
+   try {
+    currentBookId = await getBookId();
+    const book = await getBookInfo();
+    const all_notes = await getNotes();
+    res.render("book.ejs", {
+    book : book.rows[0],
+    notes : all_notes.rows,
+    });
+   } catch (error) {
+    console.log(error);
+   }   
 
+})
 
 app.post("/new", async (req, res) =>{
     const result = await db.query(
     "INSERT INTO books (book_title, author, isbn, rating, date_completed) VALUES ($1, $2, $3, $4, $5) RETURNING id", 
     [req.body.book_title, req.body.author, req.body.isbn, req.body.rating, req.body.date_completed]
     );
-    const currentBookID = result.rows[0].id;
+    currentBookId = result.rows[0].id;
     const result_note = await db.query(
         "INSERT INTO notes (book_id, note) VALUES ($1, $2)",
-        [currentBookID, req.body.note]
+        [currentBookId, req.body.note]
     );
     res.redirect("/");
 })
 
 app.post("/book", async (req, res) => {
-    const id = req.body.current_id;
-    const result = await db.query(
-        "SELECT * FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
-        [id]
-        );
-    const all_notes = await db.query(
-        "SELECT notes.id, note FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
-        [id]
-        ); 
+    currentBookId = req.body.current_id;
+    const book = await getBookInfo();
+    const all_notes = await getNotes();
     res.render("book.ejs", {
-    book : result.rows[0],
+    book : book.rows[0],
     notes : all_notes.rows,
     });
-   console.log(all_notes.rows)
+   
 })
 
 app.post("/edit", async (req, res) => {
     const updateNote = req.body.updatedNote;
     const noteId = req.body.editNoteId;
+
     const result = await db.query(
         "UPDATE notes SET note = ($1) WHERE id = ($2)",
         [updateNote, noteId]
     );
-    res.redirect("book.ejs");
+
+    res.redirect("/book");
 })
 
 app.listen(port, () => {
