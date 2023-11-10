@@ -55,7 +55,7 @@ let book_list = [];
 app.get("/", async(req,res) => {
    try {
     const result = await db.query( 
-        "SELECT * FROM books ORDER BY TO_CHAR(date_completed :: DATE, 'dd/mm/yyyy') DESC"
+        "SELECT * FROM books"
     );
     const book_img = await axios.get("https://covers.openlibrary.org/b/isbn/1591847818-S.jpg");
     book_list = result.rows;
@@ -66,6 +66,32 @@ app.get("/", async(req,res) => {
    } catch (error) {
     console.log(error.message);
    } 
+})
+
+//Order home page by date, rating or title
+app.post("/sort", async (req, res) => {
+    const method = req.body.sort_method;
+    if (method == "date_completed") {
+        const result = await db.query( 
+            "SELECT * FROM books ORDER BY TO_CHAR(date_completed :: DATE, 'dd/mm/yyyy') ASC"
+        );
+        book_list = result.rows;
+    } else if (method == "rating") {
+        console.log(method);
+        const result = await db.query(
+            "SELECT * FROM books ORDER BY rating DESC",
+        )
+        book_list = result.rows;
+    } else {
+        const result = await db.query(
+            "SELECT * FROM books ORDER BY book_title ASC",
+        )
+        book_list = result.rows; 
+    }
+
+    res.render("index.ejs", {
+        list: book_list
+    })
 })
 
 //display book page with all info
@@ -80,6 +106,7 @@ app.post("/book", async (req, res) => {
     });
    
 })
+
 app.get("/book", async (req, res) => {
    try {
     currentBookId = await getBookId();

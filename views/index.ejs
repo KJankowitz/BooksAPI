@@ -6,8 +6,18 @@
         </h1>
         <p>This is my little library of read books with notes. Browse and enjoy!</p>
       </div>
-        
-      </div>
+    <div>
+      <form class="sort" action="/sort" method="post">
+        <label for="method">Order by:</label>
+        <select id="method" name="sort_method">
+          <option value=""></option>
+          <option value="date_completed">Newest</option>
+          <option value="rating">Rating</option>
+          <option value="book_title">Title</option>
+        </select>
+        <input type="submit" value="Sort">
+      </form>   
+    </div>
       <div class="response-area">
         <section id="cards" class="cards">
             <%  for(let item of list){%>
