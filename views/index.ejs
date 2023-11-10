@@ -32,6 +32,10 @@
                 <input type="submit" name="current_id" value="<%=item.id%>" id="<%=item.id%>">
                 <label for="<%=item.id%>">View Notes</label>
               </form>
+              <form class="book_notes" action="/delete" method="post">
+                <input type="submit" name="delete_id" value="<%=item.id%>" id="delete<%=item.id%>">
+                <label for="delete<%=item.id%>">Delete entry</label>
+              </form>
             </div>
             
   

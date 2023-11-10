@@ -68,12 +68,18 @@ app.get("/", async(req,res) => {
    } 
 })
 
+//display book page with all info
 
-//Create new entry
-app.get("/new",  (req, res) => {
-    res.render("new.ejs");
+app.post("/book", async (req, res) => {
+    currentBookId = req.body.current_id;
+    const book = await getBookInfo();
+    const all_notes = await getNotes();
+    res.render("book.ejs", {
+    book : book.rows[0],
+    notes : all_notes.rows,
+    });
+   
 })
-
 app.get("/book", async (req, res) => {
    try {
     currentBookId = await getBookId();
@@ -89,6 +95,10 @@ app.get("/book", async (req, res) => {
 
 })
 
+//Create new entry
+app.get("/new",  (req, res) => {
+    res.render("new.ejs");
+})
 app.post("/new", async (req, res) =>{
     const result = await db.query(
     "INSERT INTO books (book_title, author, isbn, rating, date_completed) VALUES ($1, $2, $3, $4, $5) RETURNING id", 
@@ -102,17 +112,7 @@ app.post("/new", async (req, res) =>{
     res.redirect("/");
 })
 
-app.post("/book", async (req, res) => {
-    currentBookId = req.body.current_id;
-    const book = await getBookInfo();
-    const all_notes = await getNotes();
-    res.render("book.ejs", {
-    book : book.rows[0],
-    notes : all_notes.rows,
-    });
-   
-})
-
+//edit an existing note
 app.post("/edit", async (req, res) => {
     const updateNote = req.body.updatedNote;
     const noteId = req.body.editNoteId;
@@ -124,6 +124,23 @@ app.post("/edit", async (req, res) => {
 
     res.redirect("/book");
 })
+
+
+//delete a book entry
+app.post("/delete", async(req, res) => {
+    const id = req.body.delete_id; 
+    await db.query(
+        "DELETE FROM notes WHERE book_id = ($1)",
+        [id]
+    )
+    
+    await db.query(
+        "DELETE FROM books WHERE id = ($1)",
+        [id]
+    )
+
+    res.redirect("/");
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
