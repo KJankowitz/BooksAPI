@@ -2,7 +2,7 @@
 
     <div class="box" id="heading">
         <h1>
-          <%# listTitle %> Hello
+          Hello
         </h1>
         <p>This is my little library of read books with notes. Browse and enjoy!</p>
       </div>
@@ -23,7 +23,7 @@
             <%  for(let item of list){%>
             <article class="card-item">
                 <div>
-                    <img src="<%# cover %>">
+                    <img src="https://covers.openlibrary.org/b/isbn/<%= item.isbn %>-M.jpg" alt="cover" loading="lazy">
                </div>
             <h2 class="card-name">
                 <%=item.book_title%>

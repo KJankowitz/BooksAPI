@@ -1,5 +1,8 @@
 <%- include('partials/header.ejs'); -%>
 
+ <div>
+  <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="cover" loading="lazy">
+ </div>
  <h2><%= book.book_title %></h2>
  <h3><%= book.author %></h3>
  <p><%= book.rating %></p>

@@ -57,11 +57,9 @@ app.get("/", async(req,res) => {
     const result = await db.query( 
         "SELECT * FROM books"
     );
-    const book_img = await axios.get("https://covers.openlibrary.org/b/isbn/1591847818-S.jpg");
     book_list = result.rows;
     res.render("index.ejs", {
         list: book_list,
-        //cover: 'https://covers.openlibrary.org/b/isbn/1591847818-M.jpg'
     });
    } catch (error) {
     console.log(error.message);
@@ -77,7 +75,6 @@ app.post("/sort", async (req, res) => {
         );
         book_list = result.rows;
     } else if (method == "rating") {
-        console.log(method);
         const result = await db.query(
             "SELECT * FROM books ORDER BY rating DESC",
         )
