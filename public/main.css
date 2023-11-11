@@ -1,11 +1,15 @@
-form > input {
+.book_notes > input {
   display: none;
 }
 
 .cards {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 5px;
+}
+
+.card {
+  margin: auto;
 }
 
 body {
