@@ -1,60 +1,50 @@
 <%- include('partials/header.ejs'); -%>
 
-    <div class="box" id="heading">
-        <h1>
-          Hello
-        </h1>
-        <p>This is my little library of read books with notes. Browse and enjoy!</p>
-      </div>
-    <div>
-      <form class="sort" action="/sort" method="post">
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold text-body-emphasis">My Book Notes</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">Hello and welcome to my personal library of books with notes. Browse and enjoy!</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <form action="/sort" method="post">
         <label for="method">Order by:</label>
-        <select id="method" name="sort_method">
-          <option value=""></option>
+        <select class="form-select" id="method" name="sort_method" aria-label="Default select example">
+          <option selected>Open this select menu</option>
           <option value="date_completed">Newest</option>
           <option value="rating">Rating</option>
           <option value="book_title">Title</option>
         </select>
-        <input type="submit" value="Sort">
-      </form>   
+        <input hidden="false" type="submit" value="Sort">
+      </form>
     </div>
+  </div>
+</div>
+    
       <div class="response-area">
         <section id="cards" class="cards">
             <%  for(let item of list){%>
-            <article class="card-item">
-                <div>
-                    <img src="https://covers.openlibrary.org/b/isbn/<%= item.isbn %>-M.jpg" alt="cover" loading="lazy">
-               </div>
-            <h2 class="card-name">
-                <%=item.book_title%>
-            </h2>
-            <div class="card-info">
-              <span class="card-id">
-                <%= item.author%>
-              </span>
-              <span class="card-status">
-                <%= item.rating%>
-              </span>
-              <span class="card-location">
-                <%= item.date_completed%>
-              </span>
-              <form class="book_notes" action="/book" method="post">
-                <input type="submit" name="current_id" value="<%=item.id%>" id="<%=item.id%>">
-                <label for="<%=item.id%>">View Notes</label>
-              </form>
-              <form class="book_notes" action="/delete" method="post">
-                <input type="submit" name="delete_id" value="<%=item.id%>" id="delete<%=item.id%>">
-                <label for="delete<%=item.id%>">Delete entry</label>
-              </form>
-            </div>
-            
-  
-          </article>
+
+              <div class="card" style="width: 18rem;">
+                <img src="https://covers.openlibrary.org/b/isbn/<%= item.isbn %>-M.jpg" alt="cover" loading="lazy"class="card-img-top">
+                <div class="card-body">
+                  <h3 class="card-title"><%=item.book_title%></h3>
+                  <h5 class="card-text"><%= item.author%></h5>
+                  <h5 class="card-text">Rating: <%= item.rating%>/10</h5>
+                  <h5 class="card-text">Date completed: <%= item.date_completed%></h5>
+                  <form class="book_notes" action="/book" method="post">
+                    <input type="submit" name="current_id" value="<%=item.id%>" id="<%=item.id%>">
+                    <label class="btn btn-primary m-2" for="<%=item.id%>">View Notes</label>
+                  </form>
+                  <form class="book_notes" action="/delete" method="post">
+                    <input type="submit" name="delete_id" value="<%=item.id%>" id="delete<%=item.id%>">
+                    <label class="btn btn-primary m-2" for="delete<%=item.id%>">Delete Entry</label>
+                  </form>
+                </div>
+              </div>
           <% } %>
         </section>
-        <div class="box">
+        <div class="px-4 py-5 my-5 text-center">
           <h3>Add new book</h3>
-          <a href="/new"><button name="add" value="new">Add</button></a>
+          <a href="/new"><button class="btn btn-primary btn-lg m-2" name="add" value="new">Add</button></a>
         </div>
 
       </div>
