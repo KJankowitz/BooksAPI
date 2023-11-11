@@ -1,26 +1,33 @@
 <%- include('partials/header.ejs'); -%>
 
- <div>
-  <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="cover" loading="lazy">
- </div>
- <h2><%= book.book_title %></h2>
- <h3><%= book.author %></h3>
- <p><%= book.rating %></p>
- <p><%= book.date_completed %></p>
- <div>
-    <% for(let i=0; i<notes.length; i++){%>
-        <p id="title<%=notes[i].id%>"><%= notes[i].note %></p>
+<div class="card" style="width: 20rem;">
+  <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="cover" loading="lazy" class="card-img-top">
+  <div class="card-body">
+    <h2 class="card-title"><%=book.book_title%></h2>
+    <h5 class="card-text"><%= book.author%></h5>
+    <h5 class="card-text">Rating: <%= book.rating%>/10</h5>
+    <h5 class="card-text">Date completed: <%= book.date_completed%></h5>
+  </div>
+</div>
+
+  <div class="card" style="width: 20rem;">
+    <ul class="list-group list-group-flush">
+      <% for(let i=0; i<notes.length; i++){%>
+      <li class="list-group-item" id="title<%=notes[i].id%>"><%= notes[i].note %></li>
+    </ul>
+  </div>
         
 
     <form class="edit" action="/edit" method="post">
-        <input type="hidden" name="editNoteId" value="<%= notes[i].id %>">
-        <input id="input<%=notes[i].id%>" type="text" name="updatedNote" value="<%= notes[i].note %>" autocomplete="off"
-            autofocus="true" hidden="true">
-            <button id="done<%=notes[i].id%>" class="edit" type="submit" hidden>Done</button>
+        <input class="btn btn-primary m-2" type="hidden" name="editNoteId" value="<%= notes[i].id %>">
+
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="input<%=notes[i].id%>" name="updatedNote" value="<%= notes[i].note %>" autocomplete="off" autofocus="true" hidden="true" aria-label="Example text with button addon" aria-describedby="button-addon1">
+          <button class="btn btn-outline-secondary" id="done<%=notes[i].id%>" type="submit" hidden>Done</button>
+        </div>
     </form>
-    <button id="edit<%=notes[i].id%>" class="edit" onclick="handler('<%=notes[i].id%>')">Edit Note</button>
+    <button class="btn btn-primary m-2" id="edit<%=notes[i].id%>" onclick="handler('<%=notes[i].id%>')">Edit Note</button>
     <% } %>
- </div>
  
  <script>
     function handler(id) {

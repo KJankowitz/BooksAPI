@@ -1,6 +1,8 @@
 <%- include('partials/header.ejs'); -%>
 
-<h1>Add a new book</h1>
+
+<h1 style="text-align: center; margin: 10px">Add a new book</h1>
+<div class="new_form">
 <form action="/new" method="post">
   <p>Book title:</p>
   <input type="text" name="book_title" autocomplete="off">
@@ -21,7 +23,8 @@
   <textarea name="note" autocomplete="off"></textarea>
 
   <div class="spacer"></div>
-  <button type="submit">Add</button>
+  <button class="btn btn-primary m-2" type="submit">Add</button>
 </form>
+</div>
 
 <%- include('partials/footer.ejs'); -%>
