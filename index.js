@@ -5,7 +5,6 @@ import pg from "pg";
 
 const app = express();
 const port = 3000;
-//const API_URL = "https://covers.openlibrary.org/b/isbn/" + $value-$size +".jpg"
 
 const db = new pg.Client({
     user: "postgres",
