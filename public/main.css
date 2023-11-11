@@ -21,3 +21,14 @@ header > a > button {
   left: 10px;
   top: 5px;
 }
+
+.new_form {
+  display: flex;
+  justify-content: center;
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  margin-top: 10px;
+}
