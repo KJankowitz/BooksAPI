@@ -5,13 +5,12 @@ import pg from "pg";
 
 const app = express();
 const port = 3000;
-//const API_URL = "https://covers.openlibrary.org/b/isbn/" + $value-$size +".jpg"
 
 const db = new pg.Client({
     user: "postgres",
     host: "localhost",
     database: "books",
-    password: "DizzyBean67",
+    password: "",
     port: 5432,
   });
   db.connect();
@@ -36,7 +35,6 @@ async function getBookInfo() {
         "SELECT * FROM books JOIN notes ON books.id = book_id WHERE books.id = ($1)",
         [currentBookId]
         );
-    
     return book;
 }
 
@@ -85,14 +83,12 @@ app.post("/sort", async (req, res) => {
         )
         book_list = result.rows; 
     }
-
     res.render("index.ejs", {
         list: book_list
     })
 })
 
 //display book page with all info
-
 app.post("/book", async (req, res) => {
     currentBookId = req.body.current_id;
     const book = await getBookInfo();
@@ -116,7 +112,6 @@ app.get("/book", async (req, res) => {
    } catch (error) {
     console.log(error);
    }   
-
 })
 
 //Create new entry
@@ -140,15 +135,12 @@ app.post("/new", async (req, res) =>{
 app.post("/edit", async (req, res) => {
     const updateNote = req.body.updatedNote;
     const noteId = req.body.editNoteId;
-
     const result = await db.query(
         "UPDATE notes SET note = ($1) WHERE id = ($2)",
         [updateNote, noteId]
     );
-
     res.redirect("/book");
 })
-
 
 //delete a book entry
 app.post("/delete", async(req, res) => {
@@ -157,12 +149,10 @@ app.post("/delete", async(req, res) => {
         "DELETE FROM notes WHERE book_id = ($1)",
         [id]
     )
-    
     await db.query(
         "DELETE FROM books WHERE id = ($1)",
         [id]
     )
-
     res.redirect("/");
 });
 
