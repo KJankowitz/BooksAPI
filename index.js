@@ -1,4 +1,3 @@
-import axios from "axios";
 import bodyParser from "body-parser";
 import express from "express";
 import pg from "pg";
@@ -67,7 +66,8 @@ app.get("/", async(req,res) => {
 //Order home page by date, rating or title
 app.post("/sort", async (req, res) => {
     const method = req.body.sort_method;
-    if (method == "date_completed") {
+   try {
+       if (method == "date_completed") {
         const result = await db.query( 
             "SELECT * FROM books ORDER BY TO_CHAR(date_completed :: DATE, 'dd/mm/yyyy') ASC"
         );
@@ -86,18 +86,24 @@ app.post("/sort", async (req, res) => {
     res.render("index.ejs", {
         list: book_list
     })
+   } catch (error) {
+       console.log(error);
+   }
 })
 
 //display book page with all info
 app.post("/book", async (req, res) => {
     currentBookId = req.body.current_id;
-    const book = await getBookInfo();
+   try {
+       const book = await getBookInfo();
     const all_notes = await getNotes();
     res.render("book.ejs", {
     book : book.rows[0],
     notes : all_notes.rows,
     });
-   
+   } catch(error) {
+       console.log(error)
+   }
 })
 
 app.get("/book", async (req, res) => {
@@ -117,8 +123,9 @@ app.get("/book", async (req, res) => {
 //Create new entry
 app.get("/new",  (req, res) => {
     res.render("new.ejs");
-})
+});
 app.post("/new", async (req, res) =>{
+  try {
     const result = await db.query(
     "INSERT INTO books (book_title, author, isbn, rating, date_completed) VALUES ($1, $2, $3, $4, $5) RETURNING id", 
     [req.body.book_title, req.body.author, req.body.isbn, req.body.rating, req.body.date_completed]
@@ -129,23 +136,32 @@ app.post("/new", async (req, res) =>{
         [currentBookId, req.body.note]
     );
     res.redirect("/");
-})
+  } catch (error) {
+      console.log(error)
+  };
+});
+
 
 //edit an existing note
 app.post("/edit", async (req, res) => {
     const updateNote = req.body.updatedNote;
     const noteId = req.body.editNoteId;
-    const result = await db.query(
+    try {
+        const result = await db.query(
         "UPDATE notes SET note = ($1) WHERE id = ($2)",
         [updateNote, noteId]
     );
     res.redirect("/book");
-})
+    } catch(error) {
+        console.log(error);
+    }
+});
 
 //delete a book entry
 app.post("/delete", async(req, res) => {
     const id = req.body.delete_id; 
-    await db.query(
+    try {
+        await db.query(
         "DELETE FROM notes WHERE book_id = ($1)",
         [id]
     )
@@ -154,6 +170,9 @@ app.post("/delete", async(req, res) => {
         [id]
     )
     res.redirect("/");
+    } catch(error) {
+        console.log(error);
+    }
 });
 
 app.listen(port, () => {
