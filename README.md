@@ -1,6 +1,6 @@
 # BooksAPI
-Project to log and rate books as well as notes using Node.js with Express.js with API functionality and PostgreSQL database
-Frontend built with Bootstrap
+Project to log and rate books as well as notes using Node.js with Express.js with API functionality and PostgreSQL database.
+Frontend is built with Bootstrap.
 
 PostgreSQL will need to be pre-installed and a "books" database must be created with your own password. Adjust index.js accordingly :) 
 
