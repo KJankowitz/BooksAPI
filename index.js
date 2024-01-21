@@ -12,7 +12,7 @@ const db = new pg.Client({
     password: "",
     port: 5432,
   });
-  db.connect();
+db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -25,8 +25,8 @@ async function getBookId() {
     let bookIdList = [];
     bookIdList = result.rows;
     const id = bookIdList.find((bookId) => bookId.id == currentBookId);
-    return id.id
-}
+    return id.id;
+};
 
 //function to display info of current book
 async function getBookInfo() {
@@ -35,7 +35,7 @@ async function getBookInfo() {
         [currentBookId]
         );
     return book;
-}
+};
 
 //function to get all notes of current book
 async function getNotes() {
@@ -44,7 +44,7 @@ async function getNotes() {
         [currentBookId]
         );
     return all_notes;
-}
+};
 
 let book_list = [];
 
@@ -60,8 +60,8 @@ app.get("/", async(req,res) => {
     });
    } catch (error) {
     console.log(error.message);
-   } 
-})
+   }; 
+});
 
 //Order home page by date, rating or title
 app.post("/sort", async (req, res) => {
@@ -75,21 +75,21 @@ app.post("/sort", async (req, res) => {
     } else if (method == "rating") {
         const result = await db.query(
             "SELECT * FROM books ORDER BY rating DESC",
-        )
+        );
         book_list = result.rows;
     } else {
         const result = await db.query(
             "SELECT * FROM books ORDER BY book_title ASC",
-        )
+        );
         book_list = result.rows; 
-    }
+    };
     res.render("index.ejs", {
         list: book_list
-    })
+    });
    } catch (error) {
        console.log(error);
-   }
-})
+   };
+});
 
 //display book page with all info
 app.post("/book", async (req, res) => {
@@ -103,8 +103,8 @@ app.post("/book", async (req, res) => {
     });
    } catch(error) {
        console.log(error)
-   }
-})
+   };
+});
 
 app.get("/book", async (req, res) => {
    try {
@@ -117,8 +117,8 @@ app.get("/book", async (req, res) => {
     });
    } catch (error) {
     console.log(error);
-   }   
-})
+   };   
+});
 
 //Create new entry
 app.get("/new",  (req, res) => {
@@ -141,7 +141,6 @@ app.post("/new", async (req, res) =>{
   };
 });
 
-
 //edit an existing note
 app.post("/edit", async (req, res) => {
     const updateNote = req.body.updatedNote;
@@ -154,7 +153,7 @@ app.post("/edit", async (req, res) => {
     res.redirect("/book");
     } catch(error) {
         console.log(error);
-    }
+    };
 });
 
 //delete a book entry
@@ -164,15 +163,15 @@ app.post("/delete", async(req, res) => {
         await db.query(
         "DELETE FROM notes WHERE book_id = ($1)",
         [id]
-    )
+    );
     await db.query(
         "DELETE FROM books WHERE id = ($1)",
         [id]
-    )
+    );
     res.redirect("/");
     } catch(error) {
         console.log(error);
-    }
+    };
 });
 
 app.listen(port, () => {
